@@ -18,6 +18,10 @@ const (
 type (
 	PriorityType string
 
+	Firebase interface {
+		Send(*Message) (*Response, error)
+	}
+
 	firebase struct {
 		serverKey string
 	}
@@ -111,7 +115,7 @@ type (
 	}
 )
 
-func New(serverKey string) *firebase {
+func New(serverKey string) Firebase {
 	if len(serverKey) > 0 {
 		return &firebase{
 			serverKey: serverKey,
