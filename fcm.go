@@ -54,7 +54,7 @@ type (
 		Badge 				string `json:"badge,omitempty"` 		// iOS Only
 
 
-		Sound 				string `json:"sound,omitempty"`			// Support by Android, iOS. 
+		Sound 				string `json:"sound,omitempty"`			// Support by Android, iOS.
 		//Todo
 		//https://firebase.google.com/docs/cloud-messaging/http-server-ref
 		//sound	Optional, string or Dictionary
