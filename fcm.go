@@ -53,8 +53,9 @@ type (
 		SubTitle 			string `json:"subtitle,omitempty"` 		// iOS Only
 		Badge 				string `json:"badge,omitempty"` 		// iOS Only
 
+
+		Sound 				string `json:"sound,omitempty"`			// Support by Android, iOS. 
 		//Todo
-		//Sound string `json:"sound,omitempty"`
 		//https://firebase.google.com/docs/cloud-messaging/http-server-ref
 		//sound	Optional, string or Dictionary
 		//The sound to play when the device receives the notification.
