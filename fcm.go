@@ -27,34 +27,34 @@ type (
 	}
 	
 	Message struct {
-		To 					string 				`json:"to,omitempty"`
-		Ids 				[]string 			`json:"registration_ids,omitempty"`
-		Condition 			string 				`json:"condition,omitempty"`
-		CollapseKey 		string 				`json:"collapse_key,omitempty"`
-		Priority 			PriorityType 		`json:"priority,omitempty"`
-		ContentAvailable 	bool 				`json:"content_available,omitempty"`
-		MutableContent 		bool 				`json:"mutable_content,omitempty"`
-		TTL					time.Duration		`json:"-"`
-		TimeToLive 			string 				`json:"ttl,omitempty"`
-		DryRun 				bool 				`json:"dry_run,omitempty"`
+		To 			string 			`json:"to,omitempty"`
+		Ids 			[]string 		`json:"registration_ids,omitempty"`
+		Condition 		string 			`json:"condition,omitempty"`
+		CollapseKey 		string 			`json:"collapse_key,omitempty"`
+		Priority 		PriorityType 		`json:"priority,omitempty"`
+		ContentAvailable 	bool 			`json:"content_available,omitempty"`
+		MutableContent 		bool 			`json:"mutable_content,omitempty"`
+		TTL			time.Duration		`json:"-"`
+		TimeToLive 		string 			`json:"ttl,omitempty"`
+		DryRun 			bool 			`json:"dry_run,omitempty"`
 
-		Data 				map[string]string	`json:"data,omitempty"`
+		Data 			map[string]string	`json:"data,omitempty"`
 		Notification		Notification		`json:"notification,omitempty"`
 	}
 
 	Notification struct {
-		Title 				string `json:"title,omitempty"` 		// All Platform Supported
-		Body 				string `json:"body,omitempty"`			// All Platform Supported
-		ClickAction 		string `json:"click_action,omitempty"` 	// All Platform Supported
-		Icon 				string `json:"icon,omitempty"` 			// Support by Android, Web.
-		AndroidChannelId 	string `json:"badge,omitempty"` 		// Android Only
-		Tag 				string `json:"tag,omitempty"` 			// Android Only
-		Color 				string `json:"color,omitempty"` 		// Android Only
-		SubTitle 			string `json:"subtitle,omitempty"` 		// iOS Only
-		Badge 				string `json:"badge,omitempty"` 		// iOS Only
+		Title 				string `json:"title,omitempty"` 	// All Platform Supported
+		Body 				string `json:"body,omitempty"`		// All Platform Supported
+		ClickAction 			string `json:"click_action,omitempty"` 	// All Platform Supported
+		Icon 				string `json:"icon,omitempty"` 		// Support by Android, Web.
+		AndroidChannelId 		string `json:"badge,omitempty"` 	// Android Only
+		Tag 				string `json:"tag,omitempty"` 		// Android Only
+		Color 				string `json:"color,omitempty"` 	// Android Only
+		SubTitle 			string `json:"subtitle,omitempty"` 	// iOS Only
+		Badge 				string `json:"badge,omitempty"` 	// iOS Only
 
 
-		Sound 				string `json:"sound,omitempty"`			// Support by Android, iOS.
+		Sound 				string `json:"sound,omitempty"`		// Support by Android, iOS.
 		//Todo
 		//https://firebase.google.com/docs/cloud-messaging/http-server-ref
 		//sound	Optional, string or Dictionary
@@ -104,10 +104,10 @@ type (
 
 	Response struct {
 		MulticastId 	uint64 			`json:"multicast_id"`
-		Success 		uint 			`json:"success"`
-		Failure 		uint 			`json:"failure"`
+		Success 	uint 			`json:"success"`
+		Failure 	uint 			`json:"failure"`
 		CanonicalIds 	uint 			`json:"canonical_ids"`
-		Results 		MessageResult 	`json:"results"`
+		Results 	MessageResult 		`json:"results"`
 	}
 
 	MessageResult struct {
