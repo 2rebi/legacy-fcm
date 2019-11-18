@@ -37,7 +37,9 @@ type (
 		TTL			time.Duration		`json:"-"`
 		TimeToLive 		string 			`json:"ttl,omitempty"`
 		DryRun 			bool 			`json:"dry_run,omitempty"`
-
+		Android			AndroidConfig		`json:"android,omitempty"`	// Android support
+		//Apns			ApnsConfig		`json:"apns,omitempty"`		// ToDo : iOS support
+		Webpush			WebpushConfig		`json:"webpush,omitempty"`	// Webpush Javascript support
 		Data 			map[string]string	`json:"data,omitempty"`
 		Notification		Notification		`json:"notification,omitempty"`
 	}
@@ -102,6 +104,54 @@ type (
 
 	}
 
+	AndroidConfig struct {
+		CollapseKey 		string 			`json:"collapse_key,omitempty"`
+		Priority 		PriorityType 		`json:"priority,omitempty"`
+		TTL			string			`json:"ttl,omitempty"`				// ex) 3600s
+		RestrictedPackageName	string			`json:"restricted_package_name,omitempty"`
+		Data 			map[string]string	`json:"data,omitempty"`
+		Notification		AndroidNotification	`json:"notification,omitempty"`
+		//FcmOptions		AndroidFcmOptions	`json:"fcm_options,omitempty"`	// ToDo : AndroidFcmOptions
+	}
+	
+	AndroidNotification struct {
+		Title			string			`json:"title,omitempty"`
+		Body			string			`json:"body,omitempty"`
+		Icon			string			`json:"icon,omitempty"`
+		Color			string			`json:"color,omitempty"`
+		Sound			string			`json:"sound,omitempty"`
+		Tag			string			`json:"tag,omitempty"`
+		ClickAction		string			`json:"click_action,omitempty"`
+		BodyLocKey		string			`json:"body_loc_key,omitempty"`
+		BodyLocArgs		[]string		`json:"body_loc_args,omitempty"`
+		TitleLocKey		string			`json:"title_loc_key,omitempty"`
+		TitleLocArgs		[]string		`json:"title_loc_args,omitempty"`
+		ChannelID		string			`json:"channel_id,omitempty"`
+		Ticker			string			`json:"ticker,omitempty"`
+		Sticky			bool			`json:"sticky,omitempty"`
+		EventTime		string			`json:"event_time,omitempty"`
+		LocalOnly		bool			`json:"local_only,omitempty"`
+		//NotificationPriority	uint			`json:"notication_priority,omitempty"`		// ToDo : NotificationPriority
+		DefaultSound		bool			`json:"default_sound,omitempty"`
+		DefaultVibrateTimings	bool			`json:"default_vibrate_timings,omitempty"`
+		DefaultLightSettings	bool			`json:"default_light_settings,omitempty"`
+		VibrateTimings		[]string		`json:"vibrate_timings,omitempty"`
+		NotificationCount	uint			`json:"notification_count,omitempty"`
+		//LightSettings		LightSettings		`json:"light_settings,omitempty"`		// ToDo : LightSettings
+		Image			string			`json:"image,omitempty"`
+	}
+	
+	WebpushConfig struct {
+		Headers			map[string]string	`json:"headers"`				// ex) {"TTL":"3600"}
+		Data			map[string]string	`json:"data,omitempty"`
+		//Notification		WebpushNotification	`json:"notification,omitempty"`			// ToDo: WebpushNotification
+		FcmOptions		WebpushFcmOptions	`json:"fcm_options,omitempty"`
+	}
+	
+	WebpushFcmOptions struct {
+		Link		string			`json:"link"`	// The link to open when the user clicks on the notification. For all URL values, HTTPS is required.
+	}
+	
 	Response struct {
 		MulticastId 	uint64 			`json:"multicast_id"`
 		Success 	uint 			`json:"success"`
