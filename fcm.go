@@ -28,33 +28,35 @@ type (
 	
 	Message struct {
 		To 			string 			`json:"to,omitempty"`
-		Ids 			[]string 		`json:"registration_ids,omitempty"`
+		Ids 			[]string		`json:"registration_ids,omitempty"`
 		Condition 		string 			`json:"condition,omitempty"`
 		CollapseKey 		string 			`json:"collapse_key,omitempty"`
-		Priority 		PriorityType 		`json:"priority,omitempty"`
+		Priority 		PriorityType		`json:"priority,omitempty"`
 		ContentAvailable 	bool 			`json:"content_available,omitempty"`
 		MutableContent 		bool 			`json:"mutable_content,omitempty"`
 		TTL			time.Duration		`json:"-"`
 		TimeToLive 		string 			`json:"ttl,omitempty"`
 		DryRun 			bool 			`json:"dry_run,omitempty"`
-
-		Data 			map[string]string	`json:"data,omitempty"`
+		Android			AndroidConfig		`json:"android,omitempty"`	// Android support
+		//Apns			ApnsConfig		`json:"apns,omitempty"`		// ToDo : iOS support
+		Webpush			WebpushConfig		`json:"webpush,omitempty"`	// Webpush Javascript support
+		Data 			map[string]interface{}	`json:"data,omitempty"`
 		Notification		Notification		`json:"notification,omitempty"`
 	}
 
 	Notification struct {
-		Title 				string `json:"title,omitempty"` 	// All Platform Supported
-		Body 				string `json:"body,omitempty"`		// All Platform Supported
-		ClickAction 			string `json:"click_action,omitempty"` 	// All Platform Supported
-		Icon 				string `json:"icon,omitempty"` 		// Support by Android, Web.
-		AndroidChannelId 		string `json:"badge,omitempty"` 	// Android Only
-		Tag 				string `json:"tag,omitempty"` 		// Android Only
-		Color 				string `json:"color,omitempty"` 	// Android Only
-		SubTitle 			string `json:"subtitle,omitempty"` 	// iOS Only
-		Badge 				string `json:"badge,omitempty"` 	// iOS Only
+		Title 			string `json:"title,omitempty"` 	// All Platform Supported
+		Body 			string `json:"body,omitempty"`		// All Platform Supported
+		ClickAction 		string `json:"click_action,omitempty"` 	// All Platform Supported
+		Icon 			string `json:"icon,omitempty"` 		// Support by Android, Web.
+		AndroidChannelId	string `json:"badge,omitempty"` 	// Android Only
+		Tag 			string `json:"tag,omitempty"` 		// Android Only
+		Color 			string `json:"color,omitempty"` 	// Android Only
+		SubTitle 		string `json:"subtitle,omitempty"` 	// iOS Only
+		Badge 			string `json:"badge,omitempty"` 	// iOS Only
 
 
-		Sound 				string `json:"sound,omitempty"`		// Support by Android, iOS.
+		Sound 			string `json:"sound,omitempty"`		// Support by Android, iOS.
 		//Todo
 		//https://firebase.google.com/docs/cloud-messaging/http-server-ref
 		//sound	Optional, string or Dictionary
@@ -102,12 +104,58 @@ type (
 
 	}
 
+	AndroidConfig struct {
+		CollapseKey 		string 			`json:"collapse_key,omitempty"`
+		Priority 		PriorityType 		`json:"priority,omitempty"`
+		TTL			string			`json:"ttl,omitempty"`				// ex) 3600s
+		RestrictedPackageName	string			`json:"restricted_package_name,omitempty"`
+		Notification		AndroidNotification	`json:"notification,omitempty"`
+		//FcmOptions		AndroidFcmOptions	`json:"fcm_options,omitempty"`	// ToDo : AndroidFcmOptions
+	}
+	
+	AndroidNotification struct {
+		Title			string		`json:"title,omitempty"`
+		Body			string		`json:"body,omitempty"`
+		Icon			string		`json:"icon,omitempty"`
+		Color			string		`json:"color,omitempty"`
+		Sound			string		`json:"sound,omitempty"`
+		Tag			string		`json:"tag,omitempty"`
+		ClickAction		string		`json:"click_action,omitempty"`
+		BodyLocKey		string		`json:"body_loc_key,omitempty"`
+		BodyLocArgs		[]string	`json:"body_loc_args,omitempty"`
+		TitleLocKey		string		`json:"title_loc_key,omitempty"`
+		TitleLocArgs		[]string	`json:"title_loc_args,omitempty"`
+		ChannelID		string		`json:"channel_id,omitempty"`
+		Ticker			string		`json:"ticker,omitempty"`
+		Sticky			bool		`json:"sticky,omitempty"`
+		EventTime		string		`json:"event_time,omitempty"`
+		LocalOnly		bool		`json:"local_only,omitempty"`
+		//NotificationPriority	uint		`json:"notication_priority,omitempty"`		// ToDo : NotificationPriority
+		DefaultSound		bool		`json:"default_sound,omitempty"`
+		DefaultVibrateTimings	bool		`json:"default_vibrate_timings,omitempty"`
+		DefaultLightSettings	bool		`json:"default_light_settings,omitempty"`
+		VibrateTimings		[]string	`json:"vibrate_timings,omitempty"`
+		NotificationCount	uint		`json:"notification_count,omitempty"`
+		//LightSettings		LightSettings	`json:"light_settings,omitempty"`		// ToDo : LightSettings
+		Image			string		`json:"image,omitempty"`
+	}
+	
+	WebpushConfig struct {
+		Headers		map[string]string	`json:"headers,omitempty"`		// ex) {"TTL":"3600"}
+		//Notification	WebpushNotification	`json:"notification,omitempty"`		// ToDo: WebpushNotification
+		//FcmOptions	WebpushFcmOptions	`json:"fcm_options,omitempty"`
+	}
+	
+	WebpushFcmOptions struct {
+		Link		string			`json:"link"`	// The link to open when the user clicks on the notification. For all URL values, HTTPS is required.
+	}
+	
 	Response struct {
-		MulticastId 	uint64 			`json:"multicast_id"`
-		Success 	uint 			`json:"success"`
-		Failure 	uint 			`json:"failure"`
-		CanonicalIds 	uint 			`json:"canonical_ids"`
-		Results 	MessageResult 		`json:"results"`
+		MulticastId	uint64			`json:"multicast_id"`
+		Success		uint			`json:"success"`
+		Failure		uint			`json:"failure"`
+		CanonicalIds	uint			`json:"canonical_ids"`
+		Results		[]MessageResult		`json:"results"`
 	}
 
 	MessageResult struct {
@@ -154,10 +202,10 @@ func (firebase *firebase) Send(message *Message) (*Response, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusOK {
-		results := &Response{}
+		response := &Response{}
 		body, _ := ioutil.ReadAll(resp.Body)
-		_ = json.Unmarshal(body ,results)
-		return results, nil
+		_ = json.Unmarshal(body, response)
+		return response, nil
 	} else if resp.StatusCode == http.StatusUnauthorized {
 		return nil, errors.New("There was an error authenticating the sender account.")
 	} else {
