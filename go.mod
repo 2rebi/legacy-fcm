@@ -1,3 +1,3 @@
-module github.com/RebirthLee/legacy-fcm
+module github.com/2rebi/legacy-fcm
 
 go 1.12
